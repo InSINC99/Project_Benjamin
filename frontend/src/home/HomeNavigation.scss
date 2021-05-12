@@ -1,0 +1,14 @@
+@import "../App.scss";
+
+.btn-lg {
+  padding: 10px 20px;
+  font-size: 30px;
+  border-radius: 50px;
+}
+
+.main {
+  padding: 50px;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  transform: scale(0.25);
+  animation: pulse 2s infinite;
+}
