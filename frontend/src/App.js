@@ -1,23 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+import "semantic-ui-css/semantic.min.css";
+import { Button } from "react-bootstrap";
+import Home from "./home/Home";
+import SidebarComponent from "./sidebar/Sidebar";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SidebarComponent></SidebarComponent>
+      <Home></Home>
     </div>
   );
 }
