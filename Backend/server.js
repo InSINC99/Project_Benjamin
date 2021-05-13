@@ -1,19 +1,19 @@
-var MongoClient = require("mongodb").MongoClient;
-var url = "mongodb://localhost:27017/";
-const random = require("random-number");
-const express = require("express");
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
 const bodyParser = require("body-parser");
-const app = express();
-const httpServer = require("http").createServer(app);
 const cors = require("cors");
-app.use(cors());
-const options = {
-  origin: "http://localhost:3000",
-  methods: ["GET", "POST"],
-};
-const port = 4000;
+const PORT = 4000 || process.env;
+const random = require("random-number");
 
-const io = require("socket.io")(httpServer, options);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
 
 io.on("connection", (socket) => {
   console.log(socket);
@@ -32,8 +32,8 @@ app.post("/create-room-info", (req, res) => {
   return res.status(200).send(room_info);
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+http.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
 });
 
 // function storeRoomCredentials(packet){
