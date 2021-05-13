@@ -10,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     socket.current = io("http://localhost:4000");
-    socket.current.emit("join_room");
+    socket.current.emit("join_lobby");
   }, []);
 
   return (

@@ -15,27 +15,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-let rooms = {};
+let lobbys = {};
 // logic for creating a room -
 io.on("connection", (socket) => {
   socket.on("join_room", () => {
-    let roomCode = createRoomCode();
-    rooms[roomCode] = {};
+    let lobbyCode = createLobbyCode();
+    lobbys[lobbyCode] = {};
 
-    if (rooms.hasOwnProperty(roomCode)) {
-      rooms[roomCode][socket.id] = "member";
-      console.log(roomCode);
-      console.log(rooms);
-      socket.join(roomCode);
+    if (rooms.hasOwnProperty(lobbyCode)) {
+      lobbys[lobbyCode][socket.id] = "member";
+      console.log(lobbyCode);
+      socket.join(lobbyCode);
     }
   });
 });
 
-app.post("/create-room-info", (req, res) => {
-  let roomCode = createRoomCode();
-  rooms[roomCode] = {};
+app.post("/create-lobby", (req, res) => {
+  console.log(req.body);
+  let lobbyCode = createLobbyCode();
+  lobbys[lobbyCode] = {};
 
-  return res.status(200).send(roomCode);
+  return res.status(200).send(lobbyCode);
 });
 
 http.listen(PORT, () => {
@@ -58,12 +58,12 @@ http.listen(PORT, () => {
 
 // }
 
-const createRoomCode = () => {
+const createLobbyCode = () => {
   let opt = { min: 65, max: 90, integer: true };
-  let roomCode = "";
+  let lobbyCode = "";
   for (i = 0; i < 4; i++) {
     let num = random(opt);
-    roomCode += String.fromCharCode(num);
+    lobbyCode += String.fromCharCode(num);
   }
-  return roomCode;
+  return lobbyCode;
 };

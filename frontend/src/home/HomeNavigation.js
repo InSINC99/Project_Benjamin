@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import "./HomeNavigation.scss";
+import CreateRoomModal from "./CreateLobbyModal";
 
 const HomeNavigation = () => {
   const [show, setShow] = useState(false);
@@ -9,27 +10,14 @@ const HomeNavigation = () => {
   const handleShow = () => setShow(true);
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CreateRoomModal show={show} onHide={() => setShow(false)} />
       <div className="input-group">
         <Form.Control size="lg" type="text" placeholder="Room Code" />
         <Button variant="warning">Join</Button>
       </div>
       <div className="main">
         <Button variant="outline-warning" size="lg" onClick={handleShow}>
-          Set up a room
+          Set up a lobby
         </Button>
       </div>
     </div>
