@@ -71,6 +71,7 @@ const CreateLobbyModal = (props) => {
                   min={1}
                   max={20}
                   tooltipLabel={(radius) => `${radius} miles`}
+                  variant="info"
                 />
               </Col>
             </Form.Group>
@@ -83,11 +84,12 @@ const CreateLobbyModal = (props) => {
                 value={lobbySize}
                 onChange={(num) => setLobbySize(num)}
                 size="sm"
+                variant="info"
               />
             </Form.Group>
           </Form.Group>
           <div className="text-center">
-            <Button variant="primary" type="submit">
+            <Button variant="info" type="submit">
               Submit
             </Button>
           </div>

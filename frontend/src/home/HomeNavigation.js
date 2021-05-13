@@ -12,11 +12,11 @@ const HomeNavigation = () => {
     <div>
       <CreateRoomModal show={show} onHide={() => setShow(false)} />
       <div className="input-group">
-        <Form.Control size="lg" type="text" placeholder="Room Code" />
-        <Button variant="warning">Join</Button>
+        <Form.Control size="lg" type="text" placeholder="Lobby Code" />
+        <Button variant="info">Join</Button>
       </div>
       <div className="main">
-        <Button variant="outline-warning" size="lg" onClick={handleShow}>
+        <Button variant="outline-info" size="lg" onClick={handleShow}>
           Set up a lobby
         </Button>
       </div>
