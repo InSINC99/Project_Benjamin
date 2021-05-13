@@ -15,21 +15,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+let rooms = {};
+// logic for creating a room -
 io.on("connection", (socket) => {
-  console.log(socket);
+  socket.on("join_room", () => {
+    let roomCode = createRoomCode();
+    rooms[roomCode] = {};
 
-  socket.on("hello", () => {
-    roomCode = createRoomCode();
-    console.log(roomCode);
-    socket.join(roomCode);
+    if (rooms.hasOwnProperty(roomCode)) {
+      rooms[roomCode][socket.id] = "member";
+      console.log(roomCode);
+      console.log(rooms);
+      socket.join(roomCode);
+    }
   });
 });
 
-let rooms = {};
-
 app.post("/create-room-info", (req, res) => {
-  console.log(req.body);
-  return res.status(200).send(room_info);
+  let roomCode = createRoomCode();
+  rooms[roomCode] = {};
+
+  return res.status(200).send(roomCode);
 });
 
 http.listen(PORT, () => {
@@ -59,4 +65,5 @@ const createRoomCode = () => {
     let num = random(opt);
     roomCode += String.fromCharCode(num);
   }
+  return roomCode;
 };
