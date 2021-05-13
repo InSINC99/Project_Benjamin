@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import HomeNavigation from "./HomeNavigation";
 import "./Home.scss";
 
+//remove later
+const io = require("socket.io-client");
+
 const Home = () => {
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io("http://localhost:4000");
+    socket.current.emit("join_room");
+  }, []);
+
   return (
     <div>
       <div className="centered text-center box">
