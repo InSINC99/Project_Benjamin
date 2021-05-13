@@ -13,7 +13,7 @@ const HomeNavigation = () => {
       <CreateRoomModal show={show} onHide={() => setShow(false)} />
       <div className="input-group">
         <Form.Control size="lg" type="text" placeholder="Lobby Code" />
-        <Button variant="info">Join</Button>
+        <Button variant="outline-info">Join</Button>
       </div>
       <div className="main">
         <Button variant="outline-info" size="lg" onClick={handleShow}>
