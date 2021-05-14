@@ -15,27 +15,36 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-let lobbys = {};
+let lobbies = {};
 // logic for creating a room -
 io.on("connection", (socket) => {
-  socket.on("join_room", () => {
-    let lobbyCode = createLobbyCode();
-    lobbys[lobbyCode] = {};
+  let lobbyCode = "";
+  console.log(socket.id + " has connected");
 
-    if (rooms.hasOwnProperty(lobbyCode)) {
-      lobbys[lobbyCode][socket.id] = "member";
-      console.log(lobbyCode);
-      socket.join(lobbyCode);
+  socket.on("join-lobby", (data) => {
+    lobbyCode = data.lobbyCode;
+    if (lobbies[data.lobbyCode] === undefined) {
+      return;
     }
+    lobbies[data.lobbyCode][socket.id] = { name: data.name };
+    console.log(lobbies[lobbyCode]);
+    let dataToSend = [];
+    Object.values(lobbies[lobbyCode]).forEach((user) => {
+      dataToSend.push(user);
+    });
+    console.log("DATA TO SEND");
+    console.log(dataToSend);
+
+    socket.emit("send-users", dataToSend);
   });
 });
 
 app.post("/create-lobby", (req, res) => {
   console.log(req.body);
   let lobbyCode = createLobbyCode();
-  lobbys[lobbyCode] = {};
+  lobbies[lobbyCode] = {};
 
-  return res.status(200).send(lobbyCode);
+  return res.status(200).send({ lobbyCode: lobbyCode });
 });
 
 http.listen(PORT, () => {

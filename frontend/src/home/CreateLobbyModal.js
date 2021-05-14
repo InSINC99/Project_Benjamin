@@ -3,6 +3,7 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RangeSlider from "react-bootstrap-range-slider";
 import InputSpinner from "react-bootstrap-input-spinner";
 import "./CreateLobbyModal.scss";
+import { useHistory } from "react-router-dom";
 const axios = require("axios");
 const url = "http://localhost:4000";
 
@@ -10,6 +11,7 @@ const CreateLobbyModal = (props) => {
   const [radius, setRadius] = useState(5);
   const [lobbySize, setLobbySize] = useState(4);
   const [postcode, setPostcode] = useState("");
+  const history = useHistory();
 
   const handleSubmit = (event) => {
     console.log("HI");
@@ -26,7 +28,11 @@ const CreateLobbyModal = (props) => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          console.log("SUCCESS");
+          console.log(res.data);
+          history.push({
+            pathname: `/lobby/${res.data.lobbyCode}`,
+          });
+          history.go();
         }
       })
       .catch((err) => {
@@ -71,6 +77,7 @@ const CreateLobbyModal = (props) => {
                   min={1}
                   max={20}
                   tooltipLabel={(radius) => `${radius} miles`}
+                  variant="info"
                 />
               </Col>
             </Form.Group>
@@ -83,11 +90,12 @@ const CreateLobbyModal = (props) => {
                 value={lobbySize}
                 onChange={(num) => setLobbySize(num)}
                 size="sm"
+                variant="info"
               />
             </Form.Group>
           </Form.Group>
           <div className="text-center">
-            <Button variant="primary" type="submit">
+            <Button variant="info" type="submit">
               Submit
             </Button>
           </div>
