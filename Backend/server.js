@@ -22,13 +22,20 @@ io.on("connection", (socket) => {
   console.log(socket.id + " has connected");
 
   socket.on("join-lobby", (data) => {
-    console.log(data);
     lobbyCode = data.lobbyCode;
-    console.log(lobbies);
-    console.log(lobbyCode);
+    if (lobbies[data.lobbyCode] === undefined) {
+      return;
+    }
     lobbies[data.lobbyCode][socket.id] = { name: data.name };
-    socket.join(lobbyCode);
-    console.log(lobbies);
+    console.log(lobbies[lobbyCode]);
+    let dataToSend = [];
+    Object.values(lobbies[lobbyCode]).forEach((user) => {
+      dataToSend.push(user);
+    });
+    console.log("DATA TO SEND");
+    console.log(dataToSend);
+
+    socket.emit("send-users", dataToSend);
   });
 });
 

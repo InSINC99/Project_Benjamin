@@ -11,12 +11,10 @@ const UserInfoModal = (props) => {
   const socket = props.socket;
 
   const handleSubmit = (event) => {
-    props.setName(name);
-
     socket.emit("join-lobby", { name: name, lobbyCode: props.lobbyCode });
-
-    props.onHide();
+    props.setName(name);
     event.preventDefault();
+    props.onHide();
   };
 
   return (
