@@ -38,12 +38,16 @@ io.on("connection", (socket) => {
     socket.join(lobbyCode);
 
     //Add user into the lobby
-    lobbies[data.lobbyCode][socket.id] = { name: data.name };
+    lobbies[data.lobbyCode][socket.id] = {
+      name: data.name,
+      isOwner: data.isOwner,
+    };
 
     //Gather the members currently in a lobby to emit to everyone in the lobby
     let dataToSend = getAllUsersInLobby(lobbyCode);
 
     io.to(lobbyCode).emit("send-users", dataToSend);
+    console.log(lobbies);
   });
 
   //Listen for a 'disconnect' event

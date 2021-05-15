@@ -31,6 +31,9 @@ const CreateLobbyModal = (props) => {
           console.log(res.data);
           history.push({
             pathname: `/lobby/${res.data.lobbyCode}`,
+            state: {
+              isOwner: true,
+            },
           });
           history.go();
         }
