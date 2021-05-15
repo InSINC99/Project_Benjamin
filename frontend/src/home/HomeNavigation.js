@@ -27,7 +27,12 @@ const HomeNavigation = () => {
           return console.log(res.data.error);
         }
 
-        history.push(`/lobby/${lobbyCode}`);
+        history.push({
+          pathname: `/lobby/${lobbyCode}`,
+          state: {
+            isOwner: false,
+          },
+        });
         history.go();
       }
     });

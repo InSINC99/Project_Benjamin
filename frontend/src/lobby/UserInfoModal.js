@@ -3,12 +3,10 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 
 const UserInfoModal = (props) => {
   const [name, setName] = useState("");
-  const socket = props.socket;
 
   const handleSubmit = (event) => {
-    socket.emit("join-lobby", { name: name, lobbyCode: props.lobbyCode });
-    props.setName(name);
     event.preventDefault();
+    props.setName(name);
     props.onHide();
   };
 
