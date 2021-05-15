@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
     socket.join(lobbyCode);
 
     //Add user into the lobby
-    lobbies[data.lobbyCode][socket.id] = {
+    lobbies[data.lobbyCode].users[socket.id] = {
       name: data.name,
       isOwner: data.isOwner,
     };
@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
     }
 
     //Delete the user from the lobby
-    delete lobbies[lobbyCode][socket.id];
+    delete lobbies[lobbyCode].users[socket.id];
 
     let dataToSend = getAllUsersInLobby(lobbyCode);
     io.to(lobbyCode).emit("send-users", dataToSend);
@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
    */
   const getAllUsersInLobby = (lobby) => {
     let data = [];
-    Object.values(lobbies[lobby]).forEach((user) => {
+    Object.values(lobbies[lobby].users).forEach((user) => {
       data.push(user);
     });
 
@@ -84,7 +84,11 @@ io.on("connection", (socket) => {
  */
 app.post("/create-lobby", (req, res) => {
   let lobbyCode = createLobbyCode();
-  lobbies[lobbyCode] = {};
+  console.log(req.body);
+  lobbies[lobbyCode] = {
+    properties: req.body,
+    users: {},
+  };
 
   return res.status(200).send({ lobbyCode: lobbyCode });
 });
