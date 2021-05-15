@@ -41,7 +41,7 @@ io.on("connection", (socket) => {
     lobbies[data.lobbyCode][socket.id] = { name: data.name };
 
     //Gather the members currently in a lobby to emit to everyone in the lobby
-    let dataToSend = getAllUsersInLobby();
+    let dataToSend = getAllUsersInLobby(lobbyCode);
 
     io.to(lobbyCode).emit("send-users", dataToSend);
   });
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
     //Delete the user from the lobby
     delete lobbies[lobbyCode][socket.id];
 
-    let dataToSend = getAllUsersInLobby();
+    let dataToSend = getAllUsersInLobby(lobbyCode);
     io.to(lobbyCode).emit("send-users", dataToSend);
   });
 
@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
   const getAllUsersInLobby = (lobby) => {
     let data = [];
     Object.values(lobbies[lobby]).forEach((user) => {
-      dataToSend.push(user);
+      data.push(user);
     });
 
     return data;
@@ -83,6 +83,18 @@ app.post("/create-lobby", (req, res) => {
   lobbies[lobbyCode] = {};
 
   return res.status(200).send({ lobbyCode: lobbyCode });
+});
+
+/**
+ * Returns information about a lobby
+ */
+app.get("/lobbies/:lobbyCode", (req, res) => {
+  const lobbyCode = req.params.lobbyCode;
+  console.log(lobbies.hasOwnProperty(lobbyCode));
+  if (lobbies.hasOwnProperty(lobbyCode)) {
+    return res.sendStatus(200);
+  }
+  return res.status(200).send({ error: "Lobby does not exist" });
 });
 
 /**

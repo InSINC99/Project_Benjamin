@@ -14,7 +14,6 @@ const Lobby = (props) => {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const [socketLoaded, setSocketLoaded] = useState(false);
-  const [fuckOff, setFuckOff] = useState(false);
 
   const socket = useRef();
   const detailsEntered = useRef(false);
@@ -79,20 +78,11 @@ const Lobby = (props) => {
       <Container>
         <ShowUsers></ShowUsers>
         <div className="text-center" style={{ paddingTop: "20px" }}>
-          <Button size="lg" block onClick={() => setFuckOff(!fuckOff)}>
+          <Button size="lg" variant="info" block>
             GO!
           </Button>
         </div>
       </Container>
-      {fuckOff && (
-        <div className="display-1 text-center">
-          FUCK OFF JOE
-          <FontAwesomeIcon
-            icon={faHandMiddleFinger}
-            style={{ height: "500px", width: "500px", color: "purple" }}
-          />
-        </div>
-      )}
     </div>
   );
 };

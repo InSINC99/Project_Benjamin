@@ -31,7 +31,7 @@ const UserInfoModal = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
-          <Button block type="submit">
+          <Button variant="info" block type="submit">
             Done
           </Button>
         </Form>
