@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import RangeSlider from "react-bootstrap-range-slider";
-import InputSpinner from "react-bootstrap-input-spinner";
-import { useHistory } from "react-router-dom";
-const axios = require("axios");
-const url = "http://localhost:4000";
 
 const UserInfoModal = (props) => {
   const [name, setName] = useState("");
@@ -20,7 +15,8 @@ const UserInfoModal = (props) => {
   return (
     <Modal
       {...props}
-      size="sm"
+      backdrop="static"
+      keyboard={false}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -31,9 +27,13 @@ const UserInfoModal = (props) => {
               type="text"
               placeholder="Enter your name"
               value={name}
+              required
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
+          <Button block type="submit">
+            Done
+          </Button>
         </Form>
       </Modal.Body>
     </Modal>
