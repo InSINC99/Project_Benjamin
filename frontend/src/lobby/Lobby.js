@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Jumbotron, Row, Col, Container, Button } from "react-bootstrap";
+import { Jumbotron, Row, Col, Container, Button, Modal } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import UserInfoModal from "./UserInfoModal";
 import "./Lobby.scss";
@@ -14,9 +14,9 @@ const Lobby = (props) => {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const [socketLoaded, setSocketLoaded] = useState(false);
-  const socket = useRef();
   const [fuckOff, setFuckOff] = useState(false);
 
+  const socket = useRef();
   const detailsEntered = useRef(false);
 
   useEffect(() => {
@@ -24,6 +24,8 @@ const Lobby = (props) => {
     socket.current.on("send-users", async (data) => {
       setUsers(data);
     });
+
+    //Sets socket loaded to true so that modal doesnt load until socket has finished establishing
     setSocketLoaded(true);
   }, []);
 
@@ -41,14 +43,9 @@ const Lobby = (props) => {
         onHide={() => {
           setShow(false);
         }}
-        setName={setName}
-        onExit={(e) => {
-          if (name === "") {
-            setShow(true);
-          }
-        }}
         socket={socket.current}
         lobbyCode={lobbyCode}
+        setName={setName}
       />
     );
   };
@@ -60,7 +57,8 @@ const Lobby = (props) => {
           <div className="userBox text-center">
             <FontAwesomeIcon
               icon={faHandMiddleFinger}
-              style={{ height: "100px", width: "100px", color: "purple" }}
+              className="picture"
+              style={{ width: "10vw", height: "10vh" }}
             />
             <div>{user.name}</div>
           </div>
@@ -91,7 +89,7 @@ const Lobby = (props) => {
           FUCK OFF JOE
           <FontAwesomeIcon
             icon={faHandMiddleFinger}
-            style={{ height: "100px", width: "100px", color: "purple" }}
+            style={{ height: "500px", width: "500px", color: "purple" }}
           />
         </div>
       )}
