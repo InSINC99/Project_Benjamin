@@ -105,16 +105,18 @@ const Lobby = (props) => {
       <Container>
         <ShowUsers></ShowUsers>
         <div className="text-center" style={{ paddingTop: "20px" }}>
-          <Button
-            size="lg"
-            variant="info"
-            block
-            onClick={() => {
-              console.log(users);
-            }}
-          >
-            GO!
-          </Button>
+          {isOwner.current && (
+            <Button
+              size="lg"
+              variant="info"
+              block
+              onClick={() => {
+                console.log(users);
+              }}
+            >
+              GO!
+            </Button>
+          )}
         </div>
       </Container>
     </div>

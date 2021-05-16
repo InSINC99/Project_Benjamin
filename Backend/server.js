@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const PORT = 4000 || process.env;
 const random = require("random-number");
+const _ = require("lodash");
 
 //Using imports
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,6 +51,8 @@ io.on("connection", (socket) => {
     console.log(lobbies);
   });
 
+  //When the owner wants to start
+
   //Listen for a 'disconnect' event
   socket.on("disconnect", () => {
     console.log(`${socket.id} has disconnected`);
@@ -59,6 +62,10 @@ io.on("connection", (socket) => {
 
     //Delete the user from the lobby
     delete lobbies[lobbyCode].users[socket.id];
+
+    if (_.isEmpty(lobbies[lobbyCode].users)) {
+      return delete lobbies[lobbyCode];
+    }
 
     let dataToSend = getAllUsersInLobby(lobbyCode);
     io.to(lobbyCode).emit("send-users", dataToSend);
