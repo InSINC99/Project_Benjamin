@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import RangeSlider from "react-bootstrap-range-slider";
 import InputSpinner from "react-bootstrap-input-spinner";
 import "./CreateLobbyModal.scss";
 import { useHistory } from "react-router-dom";
+import PlacesAutocomplete from "react-places-autocomplete";
 const axios = require("axios");
 const url = "http://localhost:4000";
 
@@ -43,6 +44,20 @@ const CreateLobbyModal = (props) => {
       });
   };
 
+  useEffect(() => {
+    const script = document.createElement("script");
+
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyCbJ8X3WCT4ato28GvdPRp2e3jDQxCKaXw&libraries=places";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <Modal
       {...props}
@@ -59,12 +74,50 @@ const CreateLobbyModal = (props) => {
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="postcode">
             <Form.Label>Postcode:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your postcode"
-              value={postcode}
-              onChange={(e) => setPostcode(e.target.value)}
-            />
+            <div>
+              <PlacesAutocomplete
+                value={postcode}
+                onChange={(e) => setPostcode(e)}
+              >
+                {({
+                  getInputProps,
+                  suggestions,
+                  getSuggestionItemProps,
+                  loading,
+                }) => (
+                  <div>
+                    <input
+                      {...getInputProps({
+                        placeholder: "Search Places ...",
+                        className: "location-search-input",
+                      })}
+                    />
+                    <div className="autocomplete-dropdown-container">
+                      {loading && <div>Loading...</div>}
+                      {suggestions.map((suggestion) => {
+                        const className = suggestion.active
+                          ? "suggestion-item--active"
+                          : "suggestion-item";
+                        // inline style for demonstration purpose
+                        const style = suggestion.active
+                          ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                          : { backgroundColor: "#ffffff", cursor: "pointer" };
+                        return (
+                          <div
+                            {...getSuggestionItemProps(suggestion, {
+                              className,
+                              style,
+                            })}
+                          >
+                            <span>{suggestion.description}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </PlacesAutocomplete>
+            </div>
           </Form.Group>
 
           <Form.Group controlId="postcode">
@@ -84,7 +137,7 @@ const CreateLobbyModal = (props) => {
                 />
               </Col>
             </Form.Group>
-            <Form.Group controlId="lobbysize">
+            <Form.Group controlId="lobbysize" style={{ zIndex: "-1" }}>
               <Form.Label>Lobby Size:</Form.Label>
               <InputSpinner
                 type={"number"}
@@ -92,7 +145,7 @@ const CreateLobbyModal = (props) => {
                 min={3}
                 value={lobbySize}
                 onChange={(num) => setLobbySize(num)}
-                size="sm"
+                size="lg"
                 variant="info"
               />
             </Form.Group>
